@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Color Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #D8B4FE;
+            color: #17143A;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            transition: background-color 0.35s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 6vw, 44px);
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .color-card {
+            background: rgba(255, 255, 255, 0.55);
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+        }
+
+        .label {
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        #colorCode {
+            font-size: clamp(32px, 8vw, 46px);
+            margin: 18px 0;
+            font-weight: bold;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 22px;
+            background: #D8C5FF;
+            color: #49318A;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .hint {
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            padding: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <h1>Random Color Generator</h1>
+
+        <p class="subtitle">
+            Click anywhere on the screen to change
+            the background color!
+        </p>
+
+        <section class="color-card">
+            <div class="label">CURRENT COLOR CODE</div>
+
+            <div id="colorCode">#D8B4FE</div>
+
+            <button id="copyButton" type="button">
+                Copy Color Code
+            </button>
+        </section>
+
+        <div class="hint">
+            <strong>How to use</strong><br>
+            Tap anywhere on the screen to generate
+            a new random color.
+        </div>
+
+    </main>
+
+    <script>
+        const colorCode = document.getElementById("colorCode");
+        const copyButton = document.getElementById("copyButton");
+
+        function changeColor() {
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+
+            document.body.style.backgroundColor = color;
+            colorCode.textContent = color;
+        }
+
+        document.body.addEventListener("click", function () {
+            changeColor();
+        });
+
+        copyButton.addEventListener("click", async function (event) {
+            event.stopPropagation();
+
+            try {
+                await navigator.clipboard.writeText(colorCode.textContent);
+                copyButton.textContent = "Copied!";
+
+                setTimeout(function () {
+                    copyButton.textContent = "Copy Color Code";
+                }, 1500);
+
+            } catch (error) {
+                copyButton.textContent = colorCode.textContent;
+            }
+        });
+    </script>
+</body>
+</html>
